@@ -89,7 +89,7 @@ selecting_door2 <- function(...){
   
   # check validity of the argument, whether x is 1, 2, 3 or not
   # but this is actually never used since a player are forced to select 1, 2, or 3
-  # when they run this function
+  # when running the function
   setValidity("door", function(object){
     door_number <- object@x
     if(!(door_number %in% c(1, 2, 3))){ # if x is not 1, 2, or 3, print this
@@ -130,3 +130,29 @@ selected_door2
 
 
 # b. create a method for door objects called PlayGame
+setGeneric("PlayGame",
+           function(object="door"){
+             standardGeneric("PlayGame")
+           })
+
+# This function takes "door" object and tells you whether you win or not.
+setMethod("PlayGame", "door",
+          function(object){ # object should be "door"
+            if(!(object@x %in% c(1, 2, 3))){ # chech if x is 1, 2, or 3
+              print("You have to pick number from 1, 2, or 3!")
+                    # if not, print this and end
+            }
+            else{
+              car <- sample(1:3, 1) # pick which door has a car
+              print(sprintf("The car is behind Door %s", as.character(car)))
+                    # give the answer
+              if(object@x==car){ # if the numbers are same
+                print("Congraturations! You got the car!")
+              }
+              else{ # if the numbers are not same
+                print("Unfortunatelly, You got the goat. Cheer up!")
+              }
+            }
+          })
+
+PlayGame(selected_door2)
